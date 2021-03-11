@@ -5,11 +5,25 @@ const errorHandler = (err, req, res, next) => {
 
     error.message = err.message
 
-    //console.log('ERROR::'.red, err.name)
+    console.log('ERROR::'.blue, err.name)
+  console.log(Array.isArray([]))
+    console.log('ERROR::'.green, err.errors.address)
+    //mongoose wrong objectID
     if(err.name === 'CastError'){
         const message = `Resource not found under id of ${err.value}`
         error = new ErrorResponse(message, 404)
     }
+    //mongoError duplicate key
+    if(err.code === 11000) {
+        const message = `There is already a resource with that name, pick a new one please`
+        error = new ErrorResponse(message, 400)
+    }
+    if(err.name === 'ValidationError'){
+        const message = Object.values(err.errors).map((value)=> value.message)
+        error = new ErrorResponse(message, 400)
+    }
+
+
     res.status(error.statusCode || 500).send({success: false, error: error.message || 'Server error'})
   }
 
