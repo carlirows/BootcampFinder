@@ -5,11 +5,12 @@ const colors = require('colors')
 const connectDB = require('./config/db')
 const errorHandler = require('./middleware/error')
 
+//load dotenv variables
+//this must be loaded before any routes
+dotenv.config({ path: './config/config.env' })
+
 //route files
 const bootcamps = require('./routes/bootcamps')
-
-//load dotenv variables
-dotenv.config({ path: './config/config.env' })
 
 //connect to database
 connectDB()
@@ -26,9 +27,8 @@ app.use(morgan('dev'))
 //mount router
 app.use('/api/v1/bootcamps', bootcamps)
 
+//error handler, comes AFTER the routes, 
 app.use(errorHandler)
-
-
 
 const PORT = process.env.PORT
 
