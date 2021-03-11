@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const morgan = require('morgan')
 const colors = require('colors')
 const connectDB = require('./config/db')
+const errorHandler = require('./middleware/error')
 
 //route files
 const bootcamps = require('./routes/bootcamps')
@@ -24,6 +25,8 @@ app.use(morgan('dev'))
 
 //mount router
 app.use('/api/v1/bootcamps', bootcamps)
+
+app.use(errorHandler)
 
 
 
