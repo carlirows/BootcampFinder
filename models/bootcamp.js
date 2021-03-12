@@ -97,6 +97,9 @@ const BootcampSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+},{
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 })
 
 //create bootcamp slug from name
@@ -124,5 +127,22 @@ BootcampSchema.pre('save', async function(next){
     next()
 })
 
+//delete courses when a bootcamp is deleted
+BootcampSchema.pre('remove', async function(next){
+    console.log('middleware firing')
+    await this.model('Course').deleteMany({bootcamp: this._id})
+    next()
+})
+
+
+//reverse populate with virtuals
+//estoy creando un campo virtual 'courses', luego creo la referencia al modelo que voy a usar Course
+//como locoal field pongo el id, y en el foreign field va el nombre del campo en el modelo course al que quiero pertenecer
+BootcampSchema.virtual('courses',{
+    ref: 'Course',
+    localField:'_id',
+    foreignField: 'bootcamp',
+    justOne: false
+})
 
 module.exports = mongoose.model('Bootcamp', BootcampSchema)
