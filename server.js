@@ -11,6 +11,7 @@ dotenv.config({ path: './config/config.env' })
 
 //route files
 const bootcamps = require('./routes/bootcamps')
+const courses = require('./routes/courses')
 
 //connect to database
 connectDB()
@@ -26,6 +27,7 @@ app.use(morgan('dev'))
 
 //mount router
 app.use('/api/v1/bootcamps', bootcamps)
+app.use('/api/v1/courses', courses)
 
 //error handler, comes AFTER the routes, 
 app.use(errorHandler)
