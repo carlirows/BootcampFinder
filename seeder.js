@@ -24,7 +24,7 @@ const bootcamps = JSON.parse(fs.readFileSync(`${__dirname}/_data/bootcamps.json`
 console.log('bootcamps loaded', bootcamps)
 
 const courses = JSON.parse(fs.readFileSync(`${__dirname}/_data/courses.json`, 'utf-8'))
-console.log('bootcamps loaded', bootcamps)
+console.log('courses loaded', courses)
 
 //import data into db
 const importData = async()=>{
