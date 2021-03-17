@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const colors = require('colors')
 const connectDB = require('./config/db')
 const errorHandler = require('./middleware/error')
+const cookieParser = require('cookie-parser')
 const fileupload = require('express-fileupload')
 
 //load dotenv variables
@@ -14,6 +15,7 @@ dotenv.config({ path: './config/config.env' })
 //route files
 const bootcamps = require('./routes/bootcamps')
 const courses = require('./routes/courses')
+const auth = require('./routes/auth')
 
 //connect to database
 connectDB()
@@ -23,6 +25,9 @@ const app = express()
 
 //bodyparser
 app.use(express.json())
+
+//cookie parser
+app.use(cookieParser())
 
 //dev loggin middleware
 app.use(morgan('dev'))
@@ -36,6 +41,7 @@ app.use(express.static(path.join(__dirname,'public')))
 //mount router
 app.use('/api/v1/bootcamps', bootcamps)
 app.use('/api/v1/courses', courses)
+app.use('/api/v1/auth', auth)
 
 //error handler, comes AFTER the routes, 
 app.use(errorHandler)

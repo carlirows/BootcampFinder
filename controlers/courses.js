@@ -9,17 +9,23 @@ const Bootcamp = require('../models/bootcamp')
 //@access Public
 
 exports.getCourses = asyncHandler(async(req,res)=> {
-    let query
+  
 
     if(req.params.bootcampId){
-        query = Course.find({bootcamp: req.params.bootcampId})
+        const courses = await Course.find({bootcamp: req.params.bootcampId})
+        return res.status(200).send({
+            succes: true,
+            count: courses.length,
+            data: courses
+        })
     } else {
         //aqui no solo encuentro el recurso pero le digo que me muestre algo mas que solo el id, que lo llene con el nombre y la desc del bootcamp
         //si a populate le paso solo el campo que quiero llena 'bootcamp' nos trae toda la info del bootcamp
-        query = Course.find().populate({
+     /*    query = Course.find().populate({
             path: 'bootcamp',
             select: 'name description'
-        })
+        }) */
+        res.send(res.advancedResults)
     }
 
     const courses = await query
