@@ -6,7 +6,7 @@ const User = require('../models/User')
 //protect routes
 exports.protect = asyncHandler(async(req, res, next)=>{
     let token
-
+    //take token value from the headers of the http request
     if(req.headers.authorization && 
         req.headers.authorization.startsWith('Bearer')
         ){  console.log('hay auth en los headers')
@@ -28,7 +28,7 @@ exports.protect = asyncHandler(async(req, res, next)=>{
             //verify token
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
             console.log('decodeandoles perro',decoded)
-
+            // create acces to user data under req.user
             req.user = await User.findById(decoded.id)
             console.log(req.user)
             next()
